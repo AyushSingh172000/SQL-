@@ -1,0 +1,256 @@
+
+SQL> SELECT ENAME
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE ENAME IN 'SMITH');
+
+no rows selected
+
+SQL> SELECT ENAME
+  2  FROM EMP
+  3  WHERE EMPNO IN(SELECT MGR
+  4  FROM EMP
+  5  WHERE ENAME IN 'SMITH');
+
+ENAME
+----------
+FORD
+
+SQL> SELECT ENAME
+  2  FROM EMP
+  3  WHERE EMPNO IN(SELECT MGR
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7  WHERE ENAME IN 'ADAMS'));
+
+ENAME
+----------
+JONES
+
+SQL> SELECT DNAME
+  2  FROM DEPT
+  3  WHERE EMPNO IN(SELECT MGR
+  4  FROM EMP
+  5  WHERE ENAME IN 'JONES');
+WHERE EMPNO IN(SELECT MGR
+      *
+ERROR at line 3:
+ORA-00904: "EMPNO": invalid identifier
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO IN(SELECT DEPTNO
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7* WHERE ENAME IN 'JONES'));
+SQL> /
+WHERE ENAME IN 'JONES'));
+                        *
+ERROR at line 7:
+ORA-00911: invalid character
+
+
+SQL> ES
+SP2-0042: unknown command "ES" - rest of line ignored.
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO IN(SELECT DEPTNO
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7* WHERE ENAME IN 'JONES'))
+SQL> /
+
+DNAME
+--------------
+ACCOUNTING
+
+SQL> SELECT*
+  2  FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> SELECT SAL
+  2  FROM EMP
+  3  WHERE EMPNO IN(SELECT MGR
+  4  FROM EMP
+  5  WHERE ENAME IN 'MILLER');
+
+       SAL
+----------
+      2450
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT SAL,ENAME
+  2  FROM EMP
+  3  WHERE EMPNO IN(SELECT MGR
+  4  FROM EMP
+  5* WHERE ENAME IN 'MILLER')
+SQL> /
+
+       SAL ENAME
+---------- ----------
+      2450 CLARK
+
+SQL> SELECT LOC
+  2  FROM DEPT
+  3  WHERE DEPTNO IN(SELECT DEPTNO
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7  WHERE EMPNO IN(SELECT MGR
+  8  FROM EMP
+  9  WHERE ENAME IN 'SMITH')));
+
+LOC
+-------------
+DALLAS
+
+SQL> SELECT ENAME 
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE ENAME IN 'BLAKE');
+
+ENAME
+----------
+ALLEN
+WARD
+MARTIN
+TURNER
+JAMES
+
+SQL> SELECT COUNT(ENAME)
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE ENAME IN 'KING');
+
+COUNT(ENAME)
+------------
+           3
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE ENAME IN 'KING');
+
+  COUNT(*)
+----------
+         3
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT COUNT(*),ENAME
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5* WHERE ENAME IN 'KING')
+SQL> /
+SELECT COUNT(*),ENAME
+                *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT ENAME
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5* WHERE ENAME IN 'KING')
+SQL> /
+
+ENAME
+----------
+JONES
+BLAKE
+CLARK
+
+SQL> SELECT*
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE ENAME IN 'JONES');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+
+SQL> SELECT EMP.*
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE ENAME IN 'JONES');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+
+SQL> SELECT ENAME
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7  WHERE ENAME IN 'BLAKE'));
+
+ENAME
+----------
+CLARK
+BLAKE
+JONES
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7  WHERE ENAME IN 'FORD'));
+
+  COUNT(*)
+----------
+         2
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT ENAME
+  2  FROM EMP
+  3  WHERE MGR IN(SELECT EMPNO
+  4  FROM EMP
+  5  WHERE EMPNO IN(SELECT MGR
+  6  FROM EMP
+  7* WHERE ENAME IN 'FORD'))
+SQL> /
+
+ENAME
+----------
+FORD
+SCOTT
+
+SQL> 

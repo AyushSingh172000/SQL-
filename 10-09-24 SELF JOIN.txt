@@ -1,0 +1,224 @@
+SQL> SELECT E1.ENAME,E1.SAL,E2.ENAME,E2.SAL
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO;
+
+ENAME             SAL ENAME             SAL
+---------- ---------- ---------- ----------
+SMITH             800 FORD             3000
+ALLEN            1600 BLAKE            2850
+WARD             1250 BLAKE            2850
+JONES            2975 KING             5000
+MARTIN           1250 BLAKE            2850
+BLAKE            2850 KING             5000
+CLARK            2450 KING             5000
+SCOTT            3000 JONES            2975
+TURNER           1500 BLAKE            2850
+ADAMS            1100 SCOTT            3000
+JAMES             950 BLAKE            2850
+FORD             3000 JONES            2975
+MILLER           1300 CLARK            2450
+
+13 rows selected.
+
+SQL> SELECT E1.ENAME,E1.DEPTNO,E2.ENAME,E2.DEPTNO
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.JOB IN 'CLERK';
+
+ENAME          DEPTNO ENAME          DEPTNO
+---------- ---------- ---------- ----------
+SMITH              20 FORD               20
+ADAMS              20 SCOTT              20
+JAMES              30 BLAKE              30
+MILLER             10 CLARK              10
+
+SQL> SELECT E1.ENAME,E2.JOB
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E2.JOB IN 'ANALYST';
+
+ENAME      JOB
+---------- ---------
+SMITH      ANALYST
+ADAMS      ANALYST
+
+SQL> SELECT E1.ENAME,E2.ENAME
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.JOB IN E2.JOB;
+
+no rows selected
+
+SQL> SELECT E1.ENAME,E1.SAL,E2.ENAME,E2.SAL
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E2.SAL>E1.SAL;
+
+ENAME             SAL ENAME             SAL
+---------- ---------- ---------- ----------
+SMITH             800 FORD             3000
+ALLEN            1600 BLAKE            2850
+WARD             1250 BLAKE            2850
+JONES            2975 KING             5000
+MARTIN           1250 BLAKE            2850
+BLAKE            2850 KING             5000
+CLARK            2450 KING             5000
+TURNER           1500 BLAKE            2850
+ADAMS            1100 SCOTT            3000
+JAMES             950 BLAKE            2850
+MILLER           1300 CLARK            2450
+
+11 rows selected.
+
+SQL> SELECT E1.ENAME,E2.ENAME
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.JOB IN 'CLERK';
+
+ENAME      ENAME
+---------- ----------
+SMITH      FORD
+ADAMS      SCOTT
+JAMES      BLAKE
+MILLER     CLARK
+
+SQL>  SELECT E1.ENAME,E2.ENAME
+  2   FROM EMP E1,EMP E2
+  3  
+SQL> 
+SQL> SELECT E1.ENAME,E2.JOB
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E2.DEPTNO IN (10,20);
+
+ENAME      JOB
+---------- ---------
+SMITH      ANALYST
+JONES      PRESIDENT
+BLAKE      PRESIDENT
+CLARK      PRESIDENT
+SCOTT      MANAGER
+ADAMS      ANALYST
+FORD       MANAGER
+MILLER     MANAGER
+
+8 rows selected.
+
+SQL> SELECT E1.ENAME,E2.SAL
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.SAL>2300 AND E2.SAL>2300;
+
+ENAME             SAL
+---------- ----------
+JONES            5000
+BLAKE            5000
+CLARK            5000
+SCOTT            2975
+FORD             2975
+
+SQL> SELECT E1.ENAME,E2.HIREDATE
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.HIREDATE<'01-JAN-82';
+
+ENAME      HIREDATE
+---------- ---------
+SMITH      03-DEC-81
+ALLEN      01-MAY-81
+WARD       01-MAY-81
+JONES      17-NOV-81
+MARTIN     01-MAY-81
+BLAKE      17-NOV-81
+CLARK      17-NOV-81
+TURNER     01-MAY-81
+JAMES      01-MAY-81
+FORD       02-APR-81
+
+10 rows selected.
+
+SQL> SELECT E1.ENAME,E2.COMM
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.JOB IN 'SALESMAN' AND E2.DEPTNO IN 30;
+
+ENAME            COMM
+---------- ----------
+ALLEN
+WARD
+MARTIN
+TURNER
+
+SQL> SELECT E1.ENAME,E2.ENAME,E1.SAL,E2.SAL
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.SAL>E2.SAL;
+
+ENAME      ENAME             SAL        SAL
+---------- ---------- ---------- ----------
+SCOTT      JONES            3000       2975
+FORD       JONES            3000       2975
+
+SQL> SELECT E1.ENAME,E2.ENAME
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.JOB IN E2.JOB;
+
+no rows selected
+
+SQL> SELECT E1.ENAME,E2.ENAME
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E2.JOB IN 'MANAGER';
+
+ENAME      ENAME
+---------- ----------
+ALLEN      BLAKE
+WARD       BLAKE
+MARTIN     BLAKE
+SCOTT      JONES
+TURNER     BLAKE
+JAMES      BLAKE
+FORD       JONES
+MILLER     CLARK
+
+8 rows selected.
+
+SQL> SELECT E1.ENAME,E2.ENAME,E1.SAL*12,E2.SAL*12
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E1.DEPTNO IN (10,20) AND E2.SAL>E1.SAL;
+
+ENAME      ENAME       E1.SAL*12  E2.SAL*12
+---------- ---------- ---------- ----------
+SMITH      FORD             9600      36000
+JONES      KING            35700      60000
+CLARK      KING            29400      60000
+ADAMS      SCOTT           13200      36000
+MILLER     CLARK           15600      29400
+
+SQL> SELECT E1.ENAME,E2.JOB
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO;
+
+ENAME      JOB
+---------- ---------
+SMITH      ANALYST
+ALLEN      MANAGER
+WARD       MANAGER
+JONES      PRESIDENT
+MARTIN     MANAGER
+BLAKE      PRESIDENT
+CLARK      PRESIDENT
+SCOTT      MANAGER
+TURNER     MANAGER
+ADAMS      ANALYST
+JAMES      MANAGER
+FORD       MANAGER
+MILLER     MANAGER
+
+13 rows selected.
+
+SQL> SELECT E1.ENAME,E2.SAL
+  2  FROM EMP E1,EMP E2
+  3  WHERE E1.MGR IN E2.EMPNO AND E2.SAL LIKE '%50';
+
+ENAME             SAL
+---------- ----------
+ALLEN            2850
+WARD             2850
+MARTIN           2850
+TURNER           2850
+JAMES            2850
+MILLER           2450
+
+6 rows selected.
+
+SQL> 
